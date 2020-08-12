@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +10,6 @@
         * {
             margin: 0px;
             box-sizing: border-box;
-        }
-
-        .html {
-            height: 100%;
-        }
-        
-        .body {
-            height: 100%;
         }
 
         .principal {
@@ -49,7 +42,14 @@
             border: solid 2px white;
         }
 
-        #sd1, #sd2, #sd3, #sd4, #sd5, #sd6, #sd7 ,#sd8 {
+        #sd1,
+        #sd2,
+        #sd3,
+        #sd4,
+        #sd5,
+        #sd6,
+        #sd7,
+        #sd8 {
             display: flex;
             flex-direction: column;
         }
@@ -68,6 +68,17 @@
         let y8 = 0
 
         const dist = 130
+
+        const sd1 = new Array
+        const sd2 = new Array
+        const sd3 = new Array
+        const sd4 = new Array
+        const sd5 = new Array
+        const sd6 = new Array
+        const sd7 = new Array
+        const sd8 = new Array
+
+        let card = false
 
         function criar() {
             const img1 = document.createElement('img')
@@ -91,125 +102,160 @@
             img4.style.height = "95px"
             $('#su8').append(img4)
 
-            for(let i = 1; i <= 13; i++) {
+            for (let i = 1; i <= 13; i++) {
                 const img = document.createElement('img')
                 img.src = `./cards/diamonds/${i}.png`
                 img.style.width = "80px"
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img)
+                embaralhar(img, 'red', i)
             }
 
-            for(let i = 1; i <= 13; i++) {
+            for (let i = 1; i <= 13; i++) {
                 const img = document.createElement('img')
                 img.src = `./cards/hearts/${i}.png`
                 img.style.width = "80px"
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img)
+                embaralhar(img, 'red', i)
             }
 
-            for(let i = 1; i <= 13; i++) {
+            for (let i = 1; i <= 13; i++) {
                 const img = document.createElement('img')
                 img.src = `./cards/spades/${i}.png`
                 img.style.width = "80px"
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img)
+                embaralhar(img, 'black', i)
             }
 
-            for(let i = 1; i <= 13; i++) {
+            for (let i = 1; i <= 13; i++) {
                 const img = document.createElement('img')
                 img.src = `./cards/clubs/${i}.png`
                 img.style.width = "80px"
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img)
+                embaralhar(img, 'black', i)
             }
         }
 
         function adicionar(destino, ...origem) {
-            for(i in origem) {
+            for (i in origem) {
                 $(destino).append(origem[i])
             }
         }
+
+        const take = id => document.getElementById(id)
 
         function adicionarCartas() {
 
         }
 
-        function embaralhar(elemento) {
+        function embaralhar(element, suit, value) {
             min = Math.ceil(1)
             max = Math.floor(9)
             const aleatorio = Math.floor(Math.random() * (max - min))
 
-            switch(aleatorio) {
-                case 0: 
-                    $('#sd1').append(elemento)
-                    elemento.style.top = `${dist + y1}px`
+            switch (aleatorio) {
+                case 0:
+                    $('#sd1').append(element)
+                    element.style.top = `${dist + y1}px`
                     y1 += 20
+
+                    sd1.push({ element, suit, value, origin: 'sd1' })
+
                     break;
-                case 1: 
-                    $('#sd2').append(elemento)
-                    elemento.style.top = `${dist + y2}px`
+                case 1:
+                    $('#sd2').append(element)
+                    element.style.top = `${dist + y2}px`
                     y2 += 20
+
+                    sd2.push({ element, suit, value, origin: 'sd2' })
+
                     break;
-                case 2: 
-                    $('#sd3').append(elemento)
-                    elemento.style.top = `${dist + y3}px`
+                case 2:
+                    $('#sd3').append(element)
+                    element.style.top = `${dist + y3}px`
                     y3 += 20
+
+                    sd3.push({ element, suit, value, origin: 'sd3' })
+
                     break;
-                case 3: 
-                    $('#sd4').append(elemento)
-                    elemento.style.top = `${dist + y4}px`
+                case 3:
+                    $('#sd4').append(element)
+                    element.style.top = `${dist + y4}px`
                     y4 += 20
+
+                    sd4.push({ element, suit, value, origin: 'sd4' })
+
                     break;
-                case 4: 
-                    $('#sd5').append(elemento)
-                    elemento.style.top = `${dist + y5}px`
+                case 4:
+                    $('#sd5').append(element)
+                    element.style.top = `${dist + y5}px`
                     y5 += 20
+
+                    sd5.push({ element, suit, value, origin: 'sd5' })
+
                     break;
-                case 5: 
-                    $('#sd6').append(elemento)
-                    elemento.style.top = `${dist + y6}px`
+                case 5:
+                    $('#sd6').append(element)
+                    element.style.top = `${dist + y6}px`
                     y6 += 20
+
+                    sd6.push({ element, suit, value, origin: 'sd6' })
+
                     break;
-                case 6: 
-                    $('#sd7').append(elemento)
-                    elemento.style.top = `${dist + y7}px`
+                case 6:
+                    $('#sd7').append(element)
+                    element.style.top = `${dist + y7}px`
                     y7 += 20
+
+                    sd7.push({ element, suit, value, origin: 'sd7' })
+
                     break;
-                case 7: 
-                    $('#sd8').append(elemento)
-                    elemento.style.top = `${dist + y8}px`
+                case 7:
+                    $('#sd8').append(element)
+                    element.style.top = `${dist + y8}px`
                     y8 += 20
+
+                    sd8.push({ element, suit, value, origin: 'sd8' })
+
                     break;
             }
         }
 
-        function trocar() {
-            $('#sd1').click(e => {
-                $('#sd2').empty()
+        function setEvent(object) {
+            $(object.element).click(e => {
+                if (!card) {
+                    const last = document.getElementById(object.origin)
+
+                    sd1.pop()
+                    last.lastElementChild.remove()
+                    console.log(sd1[sd1.length - 1])
+                }
             })
         }
 
-        $('body').css('background-color', 'green') 
+        $('body').css('background-color', 'green')
         const superior = $('<div>').addClass('superior').appendTo('body')
 
         adicionar(superior, '<div id="su1" class="square">', '<div id="su2" class="square">', '<div id="su3" class="square">', '<div id="su4" class="square">',
             '<div class="divisor">', '<div id="su5" class="square">', '<div id="su6" class="square">', '<div id="su7" class="square">', '<div id="su8" class="square">')
-        
+
         const inferior = $('<div class="inferior">').appendTo('body')
 
         adicionar(inferior, '<div id="sd1" class="square">', '<div id="sd2" class="square">', '<div id="sd3" class="square">', '<div id="sd4" class="square">'
             , '<div id="sd5" class="square">', '<div id="sd6" class="square">', '<div id="sd7" class="square">', '<div id="sd8" class="square">')
 
         criar()
-        
+
+        setEvent(sd1[sd1.length - 1])
+
     </script>
 </body>
+
 </html>
