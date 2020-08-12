@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testando</title>
+    <script src="js/jquery.js"></script>
+    <style>
+        * {
+            margin: 0px;
+            box-sizing: border-box;
+        }
+
+        .html {
+            height: 100%;
+        }
+        
+        .body {
+            height: 100%;
+        }
+
+        .principal {
+            height: 100%;
+            background-color: green;
+        }
+
+        .superior {
+            height: 120px;
+            border-bottom: solid 2px white;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .inferior {
+            border: solid 2px red;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .square {
+            width: 80px;
+            height: 95px;
+            margin: 10px;
+            border: solid 1px black;
+        }
+
+        .divisor {
+            height: 100%;
+            border: solid 2px white;
+        }
+
+        #sd1, #sd2, #sd3, #sd4, #sd5, #sd6, #sd7 ,#sd8 {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let y1 = 0
+        let y2 = 0
+        let y3 = 0
+        let y4 = 0
+        let y5 = 0
+        let y6 = 0
+        let y7 = 0
+        let y8 = 0
+
+        const dist = 130
+
+        function criar() {
+            const img1 = document.createElement('img')
+            img1.src = "./cards/suits/clubs.png"
+            img1.style.width = "80px"
+            img1.style.height = "95px"
+            $('#su5').append(img1)
+            const img2 = document.createElement('img')
+            img2.src = "./cards/suits/diamonds.png"
+            img2.style.width = "80px"
+            img2.style.height = "95px"
+            $('#su6').append(img2)
+            const img3 = document.createElement('img')
+            img3.src = "./cards/suits/hearts.png"
+            img3.style.width = "80px"
+            img3.style.height = "95px"
+            $('#su7').append(img3)
+            const img4 = document.createElement('img')
+            img4.src = "./cards/suits/spades.png"
+            img4.style.width = "80px"
+            img4.style.height = "95px"
+            $('#su8').append(img4)
+
+            for(let i = 1; i <= 13; i++) {
+                const img = document.createElement('img')
+                img.src = `./cards/diamonds/${i}.png`
+                img.style.width = "80px"
+                img.style.height = "95px"
+                img.style.position = "absolute"
+
+                embaralhar(img)
+            }
+
+            for(let i = 1; i <= 13; i++) {
+                const img = document.createElement('img')
+                img.src = `./cards/hearts/${i}.png`
+                img.style.width = "80px"
+                img.style.height = "95px"
+                img.style.position = "absolute"
+
+                embaralhar(img)
+            }
+
+            for(let i = 1; i <= 13; i++) {
+                const img = document.createElement('img')
+                img.src = `./cards/spades/${i}.png`
+                img.style.width = "80px"
+                img.style.height = "95px"
+                img.style.position = "absolute"
+
+                embaralhar(img)
+            }
+
+            for(let i = 1; i <= 13; i++) {
+                const img = document.createElement('img')
+                img.src = `./cards/clubs/${i}.png`
+                img.style.width = "80px"
+                img.style.height = "95px"
+                img.style.position = "absolute"
+
+                embaralhar(img)
+            }
+        }
+
+        function adicionar(destino, ...origem) {
+            for(i in origem) {
+                $(destino).append(origem[i])
+            }
+        }
+
+        function adicionarCartas() {
+
+        }
+
+        function embaralhar(elemento) {
+            min = Math.ceil(1)
+            max = Math.floor(9)
+            const aleatorio = Math.floor(Math.random() * (max - min))
+
+            switch(aleatorio) {
+                case 0: 
+                    $('#sd1').append(elemento)
+                    elemento.style.top = `${dist + y1}px`
+                    y1 += 20
+                    break;
+                case 1: 
+                    $('#sd2').append(elemento)
+                    elemento.style.top = `${dist + y2}px`
+                    y2 += 20
+                    break;
+                case 2: 
+                    $('#sd3').append(elemento)
+                    elemento.style.top = `${dist + y3}px`
+                    y3 += 20
+                    break;
+                case 3: 
+                    $('#sd4').append(elemento)
+                    elemento.style.top = `${dist + y4}px`
+                    y4 += 20
+                    break;
+                case 4: 
+                    $('#sd5').append(elemento)
+                    elemento.style.top = `${dist + y5}px`
+                    y5 += 20
+                    break;
+                case 5: 
+                    $('#sd6').append(elemento)
+                    elemento.style.top = `${dist + y6}px`
+                    y6 += 20
+                    break;
+                case 6: 
+                    $('#sd7').append(elemento)
+                    elemento.style.top = `${dist + y7}px`
+                    y7 += 20
+                    break;
+                case 7: 
+                    $('#sd8').append(elemento)
+                    elemento.style.top = `${dist + y8}px`
+                    y8 += 20
+                    break;
+            }
+        }
+
+        function trocar() {
+            $('#sd1').click(e => {
+                $('#sd2').empty()
+            })
+        }
+
+        $('body').css('background-color', 'green') 
+        const superior = $('<div>').addClass('superior').appendTo('body')
+
+        adicionar(superior, '<div id="su1" class="square">', '<div id="su2" class="square">', '<div id="su3" class="square">', '<div id="su4" class="square">',
+            '<div class="divisor">', '<div id="su5" class="square">', '<div id="su6" class="square">', '<div id="su7" class="square">', '<div id="su8" class="square">')
+        
+        const inferior = $('<div class="inferior">').appendTo('body')
+
+        adicionar(inferior, '<div id="sd1" class="square">', '<div id="sd2" class="square">', '<div id="sd3" class="square">', '<div id="sd4" class="square">'
+            , '<div id="sd5" class="square">', '<div id="sd6" class="square">', '<div id="sd7" class="square">', '<div id="sd8" class="square">')
+
+        criar()
+        
+    </script>
+</body>
+</html>
