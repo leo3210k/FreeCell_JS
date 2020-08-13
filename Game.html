@@ -78,7 +78,9 @@
         const sd7 = new Array
         const sd8 = new Array
 
-        let card = false
+        let isSelect = false
+        let card = new Object
+        let back 
 
         function criar() {
             const img1 = document.createElement('img')
@@ -166,7 +168,7 @@
                     element.style.top = `${dist + y1}px`
                     y1 += 20
 
-                    sd1.push({ element, suit, value, origin: 'sd1' })
+                    sd1.push({ element, suit, value})
 
                     break;
                 case 1:
@@ -174,7 +176,7 @@
                     element.style.top = `${dist + y2}px`
                     y2 += 20
 
-                    sd2.push({ element, suit, value, origin: 'sd2' })
+                    sd2.push({ element, suit, value})
 
                     break;
                 case 2:
@@ -182,7 +184,7 @@
                     element.style.top = `${dist + y3}px`
                     y3 += 20
 
-                    sd3.push({ element, suit, value, origin: 'sd3' })
+                    sd3.push({ element, suit, value})
 
                     break;
                 case 3:
@@ -190,7 +192,7 @@
                     element.style.top = `${dist + y4}px`
                     y4 += 20
 
-                    sd4.push({ element, suit, value, origin: 'sd4' })
+                    sd4.push({ element, suit, value})
 
                     break;
                 case 4:
@@ -198,7 +200,7 @@
                     element.style.top = `${dist + y5}px`
                     y5 += 20
 
-                    sd5.push({ element, suit, value, origin: 'sd5' })
+                    sd5.push({ element, suit, value})
 
                     break;
                 case 5:
@@ -206,7 +208,7 @@
                     element.style.top = `${dist + y6}px`
                     y6 += 20
 
-                    sd6.push({ element, suit, value, origin: 'sd6' })
+                    sd6.push({ element, suit, value })
 
                     break;
                 case 6:
@@ -214,7 +216,7 @@
                     element.style.top = `${dist + y7}px`
                     y7 += 20
 
-                    sd7.push({ element, suit, value, origin: 'sd7' })
+                    sd7.push({ element, suit, value })
 
                     break;
                 case 7:
@@ -222,20 +224,39 @@
                     element.style.top = `${dist + y8}px`
                     y8 += 20
 
-                    sd8.push({ element, suit, value, origin: 'sd8' })
+                    sd8.push({ element, suit, value})
 
                     break;
             }
         }
 
-        function setEvent(object) {
+        function setEvent(object, stack, id, y) {
             $(object.element).click(e => {
-                if (!card) {
-                    const last = document.getElementById(object.origin)
+                if (!isSelect) {
+                    console.log(stack)
+                    y -= 20
 
-                    sd1.pop()
-                    last.lastElementChild.remove()
-                    console.log(sd1[sd1.length - 1])
+                    card = object
+                    isSelect = true
+                    back = stack
+
+                    $(`#${id} > img:last`).remove()
+                    stack.pop()
+
+                    setEvent(stack[stack.length - 1], stack, id, y)
+                } else {
+                    y += 20
+
+                    console.log(card)
+                    stack.push({ element: card.element, suit: card.suit, value: card.value })
+                    console.log(stack)
+                    $(`#${id} > img:last`).off("click")
+                    $(`#${id}`).append(card.element)
+                    $(`#${id} > img:last`).css('top', `${dist + y}px`)
+
+                    isSelect = false
+
+                    setEvent(stack[stack.length - 1], stack, id, y)
                 }
             })
         }
@@ -253,7 +274,14 @@
 
         criar()
 
-        setEvent(sd1[sd1.length - 1])
+        setEvent(sd1[sd1.length - 1], sd1, 'sd1', y1)
+        setEvent(sd2[sd2.length - 1], sd2, 'sd2', y2)
+        setEvent(sd3[sd3.length - 1], sd3, 'sd3', y3)
+        setEvent(sd4[sd4.length - 1], sd4, 'sd4', y4)
+        setEvent(sd5[sd5.length - 1], sd5, 'sd5', y5)
+        setEvent(sd6[sd6.length - 1], sd6, 'sd6', y6)
+        setEvent(sd7[sd7.length - 1], sd7, 'sd7', y7)
+        setEvent(sd8[sd8.length - 1], sd8, 'sd8', y8)
 
     </script>
 </body>
