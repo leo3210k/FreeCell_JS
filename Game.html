@@ -53,21 +53,28 @@
             display: flex;
             flex-direction: column;
         }
+
+        .red {
+            background-color: red;
+        }
     </style>
 </head>
 
 <body>
     <script>
-        let y1 = 0
-        let y2 = 0
-        let y3 = 0
-        let y4 = 0
-        let y5 = 0
-        let y6 = 0
-        let y7 = 0
-        let y8 = 0
+        let y1 = 130
+        let y2 = 130
+        let y3 = 130
+        let y4 = 130
+        let y5 = 130
+        let y6 = 130
+        let y7 = 130
+        let y8 = 130
 
-        const dist = 130
+        const y9 = 10
+        const y10 = 10
+        const y11 = 10
+        const y12 = 10
 
         const sd1 = new Array
         const sd2 = new Array
@@ -78,9 +85,20 @@
         const sd7 = new Array
         const sd8 = new Array
 
-        let isSelect = false
+        const su1 = new Array
+        const su2 = new Array
+        const su3 = new Array
+        const su4 = new Array
+        const su5 = new Array
+        const su6 = new Array
+        const su7 = new Array
+        const su8 = new Array
+
         let card = new Object
-        let back 
+        let isSelect = false
+        let back = new Object
+
+        const take = id => document.getElementById(id)
 
         function criar() {
             const img1 = document.createElement('img')
@@ -151,12 +169,6 @@
             }
         }
 
-        const take = id => document.getElementById(id)
-
-        function adicionarCartas() {
-
-        }
-
         function embaralhar(element, suit, value) {
             min = Math.ceil(1)
             max = Math.floor(9)
@@ -165,101 +177,155 @@
             switch (aleatorio) {
                 case 0:
                     $('#sd1').append(element)
-                    element.style.top = `${dist + y1}px`
+                    element.style.top = `${y1}px`
+                    sd1.push({ element, suit, value })
+
                     y1 += 20
-
-                    sd1.push({ element, suit, value})
-
                     break;
                 case 1:
                     $('#sd2').append(element)
-                    element.style.top = `${dist + y2}px`
+                    element.style.top = `${y2}px`
+                    sd2.push({ element, suit, value })
+
                     y2 += 20
-
-                    sd2.push({ element, suit, value})
-
                     break;
                 case 2:
                     $('#sd3').append(element)
-                    element.style.top = `${dist + y3}px`
+                    element.style.top = `${y3}px`
+                    sd3.push({ element, suit, value })
+
                     y3 += 20
-
-                    sd3.push({ element, suit, value})
-
                     break;
                 case 3:
                     $('#sd4').append(element)
-                    element.style.top = `${dist + y4}px`
+                    element.style.top = `${y4}px`
+                    sd4.push({ element, suit, value })
+
                     y4 += 20
-
-                    sd4.push({ element, suit, value})
-
                     break;
                 case 4:
                     $('#sd5').append(element)
-                    element.style.top = `${dist + y5}px`
+                    element.style.top = `${y5}px`
+                    sd5.push({ element, suit, value })
+
                     y5 += 20
-
-                    sd5.push({ element, suit, value})
-
                     break;
                 case 5:
                     $('#sd6').append(element)
-                    element.style.top = `${dist + y6}px`
-                    y6 += 20
-
+                    element.style.top = `${y6}px`
                     sd6.push({ element, suit, value })
 
+                    y6 += 20
                     break;
                 case 6:
                     $('#sd7').append(element)
-                    element.style.top = `${dist + y7}px`
-                    y7 += 20
-
+                    element.style.top = `${y7}px`
                     sd7.push({ element, suit, value })
 
+                    y7 += 20
                     break;
                 case 7:
                     $('#sd8').append(element)
-                    element.style.top = `${dist + y8}px`
+                    element.style.top = `${y8}px`
+                    sd8.push({ element, suit, value })
+
                     y8 += 20
-
-                    sd8.push({ element, suit, value})
-
                     break;
             }
         }
 
-        function setEvent(object, stack, id, y) {
-            $(object.element).click(e => {
+        function setEvent(stack, object, id, y) {
+            console.log('Entrou')
+            $(`#${id} > img:last`).click(e => {
                 if (!isSelect) {
-                    console.log(stack)
-                    y -= 20
+                    console.log('Tirou')
 
                     card = object
-                    isSelect = true
-                    back = stack
-
-                    $(`#${id} > img:last`).remove()
-                    stack.pop()
-
-                    setEvent(stack[stack.length - 1], stack, id, y)
-                } else {
-                    y += 20
-
                     console.log(card)
+
+                    $(`#${id} > img:last`).off('click')
+                    stack.pop()
+                    $(`#${id} > img:last`).remove()
+
+                    isSelect = true
+                    y -= 20
+                    back = { stack, id, y }
+
+                    if (stack.length === 0) {
+                        console.log('Funciona')
+                        empty(stack, id, y)
+                    } else {
+                        setEvent(stack, stack[stack.length - 1], id, y)
+                    }
+                } else {
+                    if (rules(id, object)) {
+                        console.log('Colocou')
+
+                        stack.push({ element: card.element, suit: card.suit, value: card.value })
+                        $(`#${id} > img:last`).off('click')
+                        $(`#${id}`).append(card.element)
+                        stack[stack.length - 1].element.style.top = `${y}px`
+
+                        isSelect = false
+                        y += 20
+
+                        setEvent(stack, stack[stack.length - 1], id, y)
+                    } else {
+                        reset(back.stack, back.id, back.y)
+                    }
+                }
+
+            })
+        }
+
+        function empty(stack, id, y) {
+            $(`#${id}`).on('dblclick', e => {
+                if (isSelect) {
+                    console.log('Entrou vazio')
+
                     stack.push({ element: card.element, suit: card.suit, value: card.value })
-                    console.log(stack)
-                    $(`#${id} > img:last`).off("click")
                     $(`#${id}`).append(card.element)
-                    $(`#${id} > img:last`).css('top', `${dist + y}px`)
+                    stack[stack.length - 1].element.style.top = `${y}px`
 
                     isSelect = false
+                    if (id !== 'su1' && 'su2' && 'su3' || 'su4') { y += 20 }
 
-                    setEvent(stack[stack.length - 1], stack, id, y)
+                    $(`#${id}`).off('dblclick')
+
+                    setEvent(stack, stack[stack.length - 1], id, y)
                 }
             })
         }
+
+        function reset(stack, id, y) {
+            stack.push({ element: card.element, suit: card.suit, value: card.value })
+            $(`#${id} > img:last`).off('click')
+            $(`#${id}`).append(card.element)
+            stack[stack.length - 1].element.style.top = `${y}px`
+
+            isSelect = false
+            y += 20
+
+            setEvent(stack, stack[stack.length - 1], id, y)
+        }
+
+        function rules(id, object) {
+            console.log('Teste', object)
+            if (id !== 'su1') {
+                if (id !== 'su2') {
+                    if (id !== 'su3') {
+                        if (id !== 'su4') {
+                            if (card.suit !== object.suit) { 
+                                if(card.value === object.value - 1) {
+                                    return true
+                                } else { return false } 
+                            } else { return false }
+                        } else { return false }
+                    } else { return false }
+                } else { return false }
+            } else { return false }
+        }
+
 
         $('body').css('background-color', 'green')
         const superior = $('<div>').addClass('superior').appendTo('body')
@@ -274,14 +340,23 @@
 
         criar()
 
-        setEvent(sd1[sd1.length - 1], sd1, 'sd1', y1)
-        setEvent(sd2[sd2.length - 1], sd2, 'sd2', y2)
-        setEvent(sd3[sd3.length - 1], sd3, 'sd3', y3)
-        setEvent(sd4[sd4.length - 1], sd4, 'sd4', y4)
-        setEvent(sd5[sd5.length - 1], sd5, 'sd5', y5)
-        setEvent(sd6[sd6.length - 1], sd6, 'sd6', y6)
-        setEvent(sd7[sd7.length - 1], sd7, 'sd7', y7)
-        setEvent(sd8[sd8.length - 1], sd8, 'sd8', y8)
+        //$('body').dblclick(e => {
+        //$('body').toggleClass('red')
+        //})
+
+        setEvent(sd1, sd1[sd1.length - 1], 'sd1', y1)
+        setEvent(sd2, sd2[sd2.length - 1], 'sd2', y2)
+        setEvent(sd3, sd3[sd3.length - 1], 'sd3', y3)
+        setEvent(sd4, sd4[sd4.length - 1], 'sd4', y4)
+        setEvent(sd5, sd5[sd5.length - 1], 'sd5', y5)
+        setEvent(sd6, sd6[sd6.length - 1], 'sd6', y6)
+        setEvent(sd7, sd7[sd7.length - 1], 'sd7', y7)
+        setEvent(sd8, sd8[sd8.length - 1], 'sd8', y8)
+
+        empty(su1, 'su1', y9)
+        empty(su2, 'su2', y10)
+        empty(su3, 'su3', y11)
+        empty(su4, 'su4', y12)
 
     </script>
 </body>
