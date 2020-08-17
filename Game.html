@@ -98,28 +98,38 @@
         let isSelect = false
         let back = new Object
 
+        const red = 0
+        const black = 1
+
         const take = id => document.getElementById(id)
 
         function criar() {
             const img1 = document.createElement('img')
-            img1.src = "./cards/suits/clubs.png"
+            img1.src = "./cards/suits/diamonds.png"
             img1.style.width = "80px"
             img1.style.height = "95px"
+            su5.push({ suit: 0 })
             $('#su5').append(img1)
+
             const img2 = document.createElement('img')
-            img2.src = "./cards/suits/diamonds.png"
+            img2.src = "./cards/suits/hearts.png"
             img2.style.width = "80px"
             img2.style.height = "95px"
+            su6.push({ suit: 1 })
             $('#su6').append(img2)
+
             const img3 = document.createElement('img')
-            img3.src = "./cards/suits/hearts.png"
+            img3.src = "./cards/suits/spades.png"
             img3.style.width = "80px"
             img3.style.height = "95px"
+            su7.push({ suit: 2 })
             $('#su7').append(img3)
+
             const img4 = document.createElement('img')
-            img4.src = "./cards/suits/spades.png"
+            img4.src = "./cards/suits/clubs.png"
             img4.style.width = "80px"
             img4.style.height = "95px"
+            su8.push({ suit: 3 })
             $('#su8').append(img4)
 
             for (let i = 1; i <= 13; i++) {
@@ -129,7 +139,7 @@
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img, 'red', i)
+                embaralhar(img, 0, i)
             }
 
             for (let i = 1; i <= 13; i++) {
@@ -139,7 +149,7 @@
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img, 'red', i)
+                embaralhar(img, 1, i)
             }
 
             for (let i = 1; i <= 13; i++) {
@@ -149,7 +159,7 @@
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img, 'black', i)
+                embaralhar(img, 2, i)
             }
 
             for (let i = 1; i <= 13; i++) {
@@ -159,7 +169,15 @@
                 img.style.height = "95px"
                 img.style.position = "absolute"
 
-                embaralhar(img, 'black', i)
+                embaralhar(img, 3, i)
+            }
+        }
+
+        function suit(value) {
+            if (value === 0 || value === 1) {
+                return red
+            } else {
+                return black
             }
         }
 
@@ -238,10 +256,8 @@
             console.log('Entrou')
             $(`#${id} > img:last`).click(e => {
                 if (!isSelect) {
-                    console.log('Tirou')
 
                     card = object
-                    console.log(card)
 
                     $(`#${id} > img:last`).off('click')
                     stack.pop()
@@ -252,14 +268,12 @@
                     back = { stack, id, y }
 
                     if (stack.length === 0) {
-                        console.log('Funciona')
                         empty(stack, id, y)
                     } else {
                         setEvent(stack, stack[stack.length - 1], id, y)
                     }
                 } else {
                     if (rules(id, object)) {
-                        console.log('Colocou')
 
                         stack.push({ element: card.element, suit: card.suit, value: card.value })
                         $(`#${id} > img:last`).off('click')
@@ -281,7 +295,6 @@
         function empty(stack, id, y) {
             $(`#${id}`).on('dblclick', e => {
                 if (isSelect) {
-                    console.log('Entrou vazio')
 
                     stack.push({ element: card.element, suit: card.suit, value: card.value })
                     $(`#${id}`).append(card.element)
@@ -310,20 +323,26 @@
         }
 
         function rules(id, object) {
-            console.log('Teste', object)
+            console.log(card.suit)
+            console.log(object.suit)
             if (id !== 'su1') {
                 if (id !== 'su2') {
                     if (id !== 'su3') {
                         if (id !== 'su4') {
-                            if (card.suit !== object.suit) { 
-                                if(card.value === object.value - 1) {
+                            console.log(suit(card.suit), suit(object.suit))
+                            if (suit(card.suit) !== suit(object.suit)) {
+                                if (card.value === object.value - 1) {
                                     return true
-                                } else { return false } 
+                                } else { return false }
                             } else { return false }
                         } else { return false }
                     } else { return false }
                 } else { return false }
             } else { return false }
+        }
+
+        function setGameOver() {
+
         }
 
 
