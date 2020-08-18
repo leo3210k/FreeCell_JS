@@ -25,7 +25,6 @@
         }
 
         .inferior {
-            border: solid 2px red;
             display: flex;
             justify-content: space-around;
         }
@@ -54,13 +53,26 @@
             flex-direction: column;
         }
 
-        .red {
-            background-color: red;
+        audio {
+            border: none;
+        }
+
+        #buttons {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
         }
     </style>
 </head>
 
 <body>
+    <audio id="player" autoplay loop>
+        <source src="./song/Megalovania - Undertale.mp3">
+    </audio>
+    <div id="buttons">
+        <button onclick="document.getElementById('player').play()">Play</button>
+        <button onclick="document.getElementById('player').pause()">Pause</button>
+    </div>
     <script>
         let y1 = 130
         let y2 = 130
@@ -75,6 +87,11 @@
         const y10 = 10
         const y11 = 10
         const y12 = 10
+
+        const y13 = 10
+        const y14 = 10
+        const y15 = 10
+        const y16 = 10
 
         const sd1 = new Array
         const sd2 = new Array
@@ -100,6 +117,11 @@
 
         const red = 0
         const black = 1
+
+        let diamonds = 1
+        let heart = 1
+        let spades = 1
+        let clubs = 1
 
         const take = id => document.getElementById(id)
 
@@ -341,8 +363,20 @@
             } else { return false }
         }
 
-        function setGameOver() {
+        function setGameOver(stack, id, y, suit, value) {
+            $(`#${id} > img:last`).click(e => {
+                if (card.suit === suit && card.value === value) {
+                    stack.push({ element: card.element, suit: card.suit, value: card.value })
+                    $(`#${id} > img:last`).off('click')
+                    $(`#${id}`).append(card.element)
+                    stack[stack.length - 1].element.style.top = `${y}px`
 
+                    isSelect = false
+                    value++
+
+                    setGameOver(stack, id, suit, value)
+                }
+            })
         }
 
 
@@ -359,10 +393,6 @@
 
         criar()
 
-        //$('body').dblclick(e => {
-        //$('body').toggleClass('red')
-        //})
-
         setEvent(sd1, sd1[sd1.length - 1], 'sd1', y1)
         setEvent(sd2, sd2[sd2.length - 1], 'sd2', y2)
         setEvent(sd3, sd3[sd3.length - 1], 'sd3', y3)
@@ -376,6 +406,11 @@
         empty(su2, 'su2', y10)
         empty(su3, 'su3', y11)
         empty(su4, 'su4', y12)
+
+        setGameOver(su5, 'su5', y13, 0, diamonds)
+        setGameOver(su6, 'su6', y14, 1, heart)
+        setGameOver(su7, 'su7', y15, 2, spades)
+        setGameOver(su8, 'su8', y16, 3, clubs)
 
     </script>
 </body>
